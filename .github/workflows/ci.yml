@@ -37,7 +37,7 @@ jobs:
       - name: Run tests
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rag_risk_test
-          API_KEY: test-API_KEY
+          API_KEY: key-1234
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY}}
         run: uv run pytest tests/
 
