@@ -15,4 +15,4 @@ async def ingest(
     content=request.content,
     metadata=request.metadata
   )
-  return IngestResponse(docuemnt_id=document_id, chunk_count=chunk_count)
+  return IngestResponse(document_id=document_id, chunk_count=chunk_count)

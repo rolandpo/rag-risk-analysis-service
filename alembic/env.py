@@ -6,7 +6,8 @@ from alembic import context
 from app.core.config import settings
 
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.database_url)
+sqlalchemy_url = settings.database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+config.set_main_option("sqlalchemy.url", sqlalchemy_url)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -24,9 +25,12 @@ async def run_migrations_online() -> None:
         poolclass=pool.NullPool
     )
     async with connectable.connect() as connection:
-        await connection.run_sync(context.configure, connection=connection)
-        await connection.run_sync(context.run_migrations)
-
+        await connection.run_sync(
+            lambda conn: context.configure(connection=conn)
+            )
+        await connection.run_sync(
+            lambda conn: context.run_migrations()
+        )
 def run_migrations() -> None:
     if context.is_offline_mode():
         run_migrations_offline()

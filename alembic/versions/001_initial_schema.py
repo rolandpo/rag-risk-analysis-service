@@ -8,12 +8,13 @@ branch_labels = None
 depends_on = None
 
 def upgrade() -> None:
+  op.execute("CREATE EXTENSION IF NOT EXISTS vector")
   op.create_table(
     "documents",
     sa.Column("id", sa.String, primary_key=True),
     sa.Column("title", sa.String, nullable=False),
     sa.Column("metadata", sa.JSON, nullable=False, server_default="{}"),
-    sa.Column("created_at", sa.DateTime, server_default=sa.fuync.now())
+    sa.Column("created_at", sa.DateTime, server_default=sa.func.now())
   )
 
   op.create_table(
