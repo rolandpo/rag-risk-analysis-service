@@ -16,6 +16,6 @@ async def retrieve(question: str, top_k: int | None = None) -> list[dict]:
       ORDER by distance
       LIMIT $2
       """,
-      query_embedding, k
+      "[" + ",".join(map(str, query_embedding)) + "]", k
     )
   return [dict(row) for row in rows]
